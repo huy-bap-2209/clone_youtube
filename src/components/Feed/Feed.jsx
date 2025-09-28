@@ -10,6 +10,12 @@ const Feed = ({ category }) => {
   const [data, setData] = useState([]);
 
   const fetchData = async () => {
+    // Kiểm tra API_KEY trước khi fetch
+    if (!API_KEY) {
+      console.warn("API_KEY chưa được khai báo!");
+      return; // Dừng hàm nếu chưa có key
+    }
+
     const videoList_url = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=50&regionCode=US&videoCategoryId=${category}&key=${API_KEY} `;
     await fetch(videoList_url).then((response) =>
       response.json().then((data) => setData(data.items))
