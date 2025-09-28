@@ -1,0 +1,13 @@
+/* layout của content nằm gọn trong thẻ div và k bị đè bởi header hay sidebar */
+/* k bị ảnh hưởng bởi hidden sidebar */
+.container {
+  background: #f9f9f9;
+  padding-left: 17%;
+  padding-right: 2%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.large-container {
+  padding-left: 7%;
+}

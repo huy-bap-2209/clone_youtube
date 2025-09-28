@@ -16,9 +16,9 @@ import tom from "../../assets/tom.png";
 import megan from "../../assets/megan.png";
 import cameron from "../../assets/cameron.png";
 
-const Sidebar = () => {
+const Sidebar = ({ sidebar }) => {
   return (
-    <div className="sidebar">
+    <div className={`sidebar ${sidebar ? "" : "small-sidebar"}`}>
       <div className="shortcut-links">
         <div className="side-links">
           <img src={home} alt="" />
@@ -60,15 +60,23 @@ const Sidebar = () => {
       </div>
       <div className="subscribe-list">
         <h3>Subscribe</h3>
-        <div className="side-link">
+        <div className="side-links">
           <img src={jack} alt="" />
           <p>PewDieDie</p>
+        </div>
+        <div className="side-links">
           <img src={simon} alt="" />
           <p>David Jason</p>
+        </div>
+        <div className="side-links">
           <img src={tom} alt="" />
           <p>Tom Cruid </p>
+        </div>
+        <div className="side-links">
           <img src={cameron} alt="" />
           <p>5 Minute Craft</p>
+        </div>
+        <div className="side-links">
           <img src={megan} alt="" />
           <p>Red Bull Challenge</p>
         </div>
