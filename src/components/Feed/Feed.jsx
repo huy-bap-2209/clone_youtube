@@ -22,9 +22,11 @@ const Feed = ({ category }) => {
 
   return (
     <div className="feed">
-      {data.map((item, index) => {
+      {data.map((item) => {
         return (
           <Link
+            // nên dùng ket={item.id}(unique) tránh console warning
+            key={item.id}
             to={`video/${item.snippet.categoryId}/${item.id}`}
             className="card"
           >
@@ -33,7 +35,10 @@ const Feed = ({ category }) => {
             <h3>{item.snippet.channelTitle}</h3>
             <p>
               {value_converter(item.statistics.viewCount)} views &bull;{" "}
-              {moment(item.snippet.publishedAt).fromNow()}
+              {/* nếu publishedAt là undefine hay do Api chưa trả về có thể sẽ lỗi */}
+              {/* nên check điều kiện trước */}
+              {item.snippet.publishedAt &&
+                moment(item.snippet.publishedAt).fromNow()}
             </p>
           </Link>
         );

@@ -1,5 +1,6 @@
 export const API_KEY = "AIzaSyD_TzMUUud_OnQT7fREQHkNWVDxz0-fKt8";
 
+// hàm điều kiện display views
 export const value_converter = (value) => {
   if (value >= 1000000) {
     return Math.floor(value / 1000000) + "M";
