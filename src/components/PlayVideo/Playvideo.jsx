@@ -3,7 +3,7 @@ import "./Playvideo.css";
 
 // import video1 from "../../assets/video.mp4";
 import like from "../../assets/like.png";
-import dislike from "../../assets/dislike.png";
+// import dislike from "../../assets/dislike.png";
 import save from "../../assets/save.png";
 import share from "../../assets/share.png";
 import user_profile from "../../assets/user_profile.jpg";
@@ -92,7 +92,6 @@ const Playvideo = () => {
         {/* prettier-ignore */}
         <div>
             <span><img src={like} alt="" />{apiData?value_converter(apiData.statistics.likeCount):"Loading..."}</span>
-            <span><img src={dislike} alt="" />0</span>
             <span><img src={share} alt="" />Share</span>
             <span><img src={save} alt="" />Save</span>
         </div>
@@ -181,7 +180,6 @@ const Playvideo = () => {
                       item.snippet.topLevelComment.snippet.likeCount
                     )}
                   </span>
-                  <img src={dislike} alt="" />
                 </div>
               </div>
             </div>
