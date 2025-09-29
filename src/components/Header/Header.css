@@ -53,6 +53,11 @@ nav {
   width: 15px;
 }
 
+.voice-search {
+  width: 18px;
+  margin-left: -10px;
+}
+
 .nav-right img {
   width: 25px;
   margin-right: 25px;

@@ -6,24 +6,27 @@ import like from "../../assets/like.png";
 import dislike from "../../assets/dislike.png";
 import save from "../../assets/save.png";
 import share from "../../assets/share.png";
-import jack from "../../assets/jack.png";
 import user_profile from "../../assets/user_profile.jpg";
 
 import moment from "moment";
 
 import { API_KEY, value_converter } from "../../data";
-import { data } from "react-router-dom";
+// import { data } from "react-router-dom";
 
 const Playvideo = ({ videoId }) => {
   const [apiData, setApiData] = useState(null);
   const [channelData, setChannelData] = useState(null);
+  const [cmtData, setCmtData] = useState([]);
+  const [inputActive, setInputActive] = useState(false);
+  const [comments, setComments] = useState("");
+
   // const [loading, setLoading] = useState(true);
 
   const fetchVideoData = async () => {
-    if (!API_KEY) {
-      console.warn("API_KEY chưa được khai báo!");
-      return;
-    }
+    // if (!API_KEY) {
+    //   console.warn("API_KEY chưa được khai báo!");
+    //   return;
+    // }
 
     // fetching videos data in4
     const videoDetails_url = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoId}&key=${API_KEY}`;
@@ -34,10 +37,16 @@ const Playvideo = ({ videoId }) => {
 
   const fetchOtherData = async () => {
     //fetching channel data in4
-    const channelData_url = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=${apiData.snippet.channelId}&key=${API_KEY}`;
+    // const channelData_url = `https://youtube.googleapis.com/youtube/v3/ { ĐỂ Ý ĐOẠN ROUTE NÀY VÌ HÀM LẤY CHANNEL DATA NÊN PHẢI FETCH VỚI CHANNEL CHỨ KPH VIDEO NHƯ TRÊN } channels?part=snippet%2CcontentDetails%2Cstatistics&id=${apiData.snippet.channelId}&key=${API_KEY}`;
+    const channelData_url = `https://youtube.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails%2Cstatistics&id=${apiData.snippet.channelId}&key=${API_KEY}`;
     await fetch(channelData_url)
       .then((res) => res.json())
-      .then((data) => setChannelData(data.item[0]));
+      .then((data) => setChannelData(data.items[0]));
+
+    const cmt_url = `https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet%2Creplies&videoId=${videoId}&key=${API_KEY}`;
+    await fetch(cmt_url)
+      .then((res) => res.json())
+      .then((data) => setCmtData(data.items));
   };
 
   useEffect(() => {
@@ -80,7 +89,7 @@ const Playvideo = ({ videoId }) => {
         {/* prettier-ignore */}
         <div>
             <span><img src={like} alt="" />{apiData?value_converter(apiData.statistics.likeCount):"Loading..."}</span>
-            <span><img src={dislike} alt="" />1.235</span>
+            <span><img src={dislike} alt="" />0</span>
             <span><img src={share} alt="" />Share</span>
             <span><img src={save} alt="" />Save</span>
         </div>
@@ -89,27 +98,25 @@ const Playvideo = ({ videoId }) => {
       <div className="publisher">
         <img
           // check nếu api data có sẵn thì hiện logo user còn k thì render empty string
-          src={
-            channelData
-              ? channelData.snippet.thumbnails.default.url
-              : "undefine"
-          }
+          src={channelData ? channelData.snippet.thumbnails.default.url : ""}
           alt=""
         />
         <div>
           <p>{apiData ? apiData.snippet.channelTitle : "No name"}</p>
-          <span>1.3M Subscribers</span>
+          <span>
+            {channelData
+              ? value_converter(channelData.statistics.subscriberCount)
+              : ""}{" "}
+            Subscribers
+          </span>
         </div>
         <button>Subscribe</button>
       </div>
       <div className="video-desc">
         <p>
           {/* .slice giới hạn decs nếu quá dài */}
-          {apiData ? apiData.snippet.description.slice(0, 200) : "Loading..."}
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore,
-          accusantium.
+          {/* nếu mô tả quá dài & cần ẩn bớt có thể dùng .slice(0, xxx) */}
+          {apiData ? apiData.snippet.description : "Loading..."}
         </p>
         <hr />
         <h4>
@@ -120,157 +127,63 @@ const Playvideo = ({ videoId }) => {
         </h4>
         <div className="comments">
           <img src={user_profile} alt="" />
-          <div>
-            <h3>
-              Jack Mashon <span>2 day ago</span>
-            </h3>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis
-              corrupti commodi iusto!
-            </p>
-            <div className="comments-action">
-              <img src={like} alt="" />
-              <span>315</span>
-              <img src={dislike} alt="" />
-            </div>
+          <div className="input-wrapper">
+            <input
+              type="text"
+              placeholder="Add Comments"
+              value={comments}
+              onFocus={() => setInputActive(true)}
+              onChange={(e) => setComments(e.target.value)}
+            />
+            {inputActive && (
+              <div className="input-buttons">
+                <button
+                  onClick={() => {
+                    console.log("Post comment:", comments);
+                    setComments("");
+                    setInputActive(false);
+                  }}
+                >
+                  Comment
+                </button>
+                <button
+                  onClick={() => {
+                    setComments("");
+                    setInputActive(false);
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            )}
           </div>
         </div>
-        <div className="comments">
-          <img src={user_profile} alt="" />
-          <div>
-            <h3>
-              Jack Mashon <span>2 day ago</span>
-            </h3>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis
-              corrupti commodi iusto!
-            </p>
-            <div className="comments-action">
-              <img src={like} alt="" />
-              <span>315</span>
-              <img src={dislike} alt="" />
+        {cmtData.map((item, index) => {
+          return (
+            <div key={index} className="comments-container">
+              <img
+                src={item.snippet.topLevelComment.snippet.authorProfileImageUrl}
+                alt=""
+              />
+              <div>
+                <h3>
+                  {item.snippet.topLevelComment.snippet.authorDisplayName}
+                  <span>2 day ago</span>
+                </h3>
+                <p>{item.snippet.topLevelComment.snippet.textDisplay}</p>
+                <div className="comments-action">
+                  <img src={like} alt="" />
+                  <span>
+                    {value_converter(
+                      item.snippet.topLevelComment.snippet.likeCount
+                    )}
+                  </span>
+                  <img src={dislike} alt="" />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div className="comments">
-          <img src={user_profile} alt="" />
-          <div>
-            <h3>
-              Jack Mashon <span>2 day ago</span>
-            </h3>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis
-              corrupti commodi iusto!
-            </p>
-            <div className="comments-action">
-              <img src={like} alt="" />
-              <span>315</span>
-              <img src={dislike} alt="" />
-            </div>
-          </div>
-        </div>
-        <div className="comments">
-          <img src={user_profile} alt="" />
-          <div>
-            <h3>
-              Jack Mashon <span>2 day ago</span>
-            </h3>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis
-              corrupti commodi iusto!
-            </p>
-            <div className="comments-action">
-              <img src={like} alt="" />
-              <span>315</span>
-              <img src={dislike} alt="" />
-            </div>
-          </div>
-        </div>
-        <div className="comments">
-          <img src={user_profile} alt="" />
-          <div>
-            <h3>
-              Jack Mashon <span>2 day ago</span>
-            </h3>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis
-              corrupti commodi iusto!
-            </p>
-            <div className="comments-action">
-              <img src={like} alt="" />
-              <span>315</span>
-              <img src={dislike} alt="" />
-            </div>
-          </div>
-        </div>
-        <div className="comments">
-          <img src={user_profile} alt="" />
-          <div>
-            <h3>
-              Jack Mashon <span>2 day ago</span>
-            </h3>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis
-              corrupti commodi iusto!
-            </p>
-            <div className="comments-action">
-              <img src={like} alt="" />
-              <span>315</span>
-              <img src={dislike} alt="" />
-            </div>
-          </div>
-        </div>
-        <div className="comments">
-          <img src={user_profile} alt="" />
-          <div>
-            <h3>
-              Jack Mashon <span>2 day ago</span>
-            </h3>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis
-              corrupti commodi iusto!
-            </p>
-            <div className="comments-action">
-              <img src={like} alt="" />
-              <span>315</span>
-              <img src={dislike} alt="" />
-            </div>
-          </div>
-        </div>
-        <div className="comments">
-          <img src={user_profile} alt="" />
-          <div>
-            <h3>
-              Jack Mashon <span>2 day ago</span>
-            </h3>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis
-              corrupti commodi iusto!
-            </p>
-            <div className="comments-action">
-              <img src={like} alt="" />
-              <span>315</span>
-              <img src={dislike} alt="" />
-            </div>
-          </div>
-        </div>
-        <div className="comments">
-          <img src={user_profile} alt="" />
-          <div>
-            <h3>
-              Jack Mashon <span>2 day ago</span>
-            </h3>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis
-              corrupti commodi iusto!
-            </p>
-            <div className="comments-action">
-              <img src={like} alt="" />
-              <span>315</span>
-              <img src={dislike} alt="" />
-            </div>
-          </div>
-        </div>
+          );
+        })}
       </div>
     </div>
   );

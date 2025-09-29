@@ -10,11 +10,11 @@ import tech from "../../assets/tech.png";
 import music from "../../assets/music.png";
 import blogs from "../../assets/blogs.png";
 import news from "../../assets/news.png";
-import jack from "../../assets/jack.png";
-import simon from "../../assets/simon.png";
-import tom from "../../assets/tom.png";
-import megan from "../../assets/megan.png";
-import cameron from "../../assets/cameron.png";
+// import jack from "../../assets/jack.png";
+// import simon from "../../assets/simon.png";
+// import tom from "../../assets/tom.png";
+// import megan from "../../assets/megan.png";
+// import cameron from "../../assets/cameron.png";
 
 const Sidebar = ({ sidebar, category, setCategory }) => {
   return (
@@ -87,7 +87,7 @@ const Sidebar = ({ sidebar, category, setCategory }) => {
       </div>
       <div className="subscribe-list">
         <h3>Subscribe</h3>
-        <div className="side-links">
+        {/* <div className="side-links">
           <img src={jack} alt="" />
           <p>PewDieDie</p>
         </div>
@@ -106,7 +106,7 @@ const Sidebar = ({ sidebar, category, setCategory }) => {
         <div className="side-links">
           <img src={megan} alt="" />
           <p>Putin</p>
-        </div>
+        </div> */}
       </div>
     </div>
   );

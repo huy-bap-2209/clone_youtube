@@ -98,22 +98,115 @@
 
 .comments {
   display: flex;
-  align-items: flex-start;
-  margin-right: 20px 0;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  margin-top: 9px;
+}
+
+/* .input-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+} */
+
+.input-wrapper {
+  position: relative; /* quan trọng để 2 button định vị theo input */
+  width: 100%;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding: 8px 90px 8px 12px; /* chừa khoảng trống bên phải cho nút */
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.input-wrapper input:focus {
+  border-color: #065fd4;
 }
 
 .comments img {
   width: 35px;
   border-radius: 50%;
+}
+
+.input-buttons {
+  position: absolute;
+  right: 20px; /* sát mép phải input */
+  bottom: 0; /* sát mép dưới input */
+  display: flex;
+  gap: 6px;
+  transform: translate(
+    0,
+    50%
+  ); /* đẩy ra ngoài 1/2 chiều cao => nửa trong nửa ngoài */
+}
+
+.input-buttons button {
+  padding: 4px 12px;
+  border-radius: 14px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s ease;
+}
+
+.input-buttons button.cancel {
+  background: transparent;
+  color: #606060;
+}
+
+.input-buttons button.cancel:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.input-buttons button.post {
+  background: #065fd4;
+  color: white;
+}
+
+.input-buttons button.post:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+}
+
+.input-buttons button.post:hover:not(:disabled) {
+  background: #0047b3;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.comments-container {
+  display: flex;
+  align-items: flex-start;
+  margin-right: 20px 0;
+}
+
+.comments-container img {
+  width: 35px;
+  border-radius: 50%;
   margin-right: 15px;
 }
 
-.comments h3 {
+.comments-container h3 {
   font-size: 14px;
   margin-bottom: 2px;
 }
 
-.comments h3 span {
+.comments-container h3 span {
   font-size: 12px;
   color: #5a5a5a;
   font-weight: 500;
