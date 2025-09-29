@@ -12,9 +12,11 @@ import user_profile from "../../assets/user_profile.jpg";
 import moment from "moment";
 
 import { API_KEY, value_converter } from "../../data";
+import { data } from "react-router-dom";
 
 const Playvideo = ({ videoId }) => {
   const [apiData, setApiData] = useState(null);
+  const [channelData, setChannelData] = useState(null);
   // const [loading, setLoading] = useState(true);
 
   const fetchVideoData = async () => {
@@ -23,16 +25,28 @@ const Playvideo = ({ videoId }) => {
       return;
     }
 
-    // fetching videos data
+    // fetching videos data in4
     const videoDetails_url = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoId}&key=${API_KEY}`;
     await fetch(videoDetails_url)
       .then((res) => res.json())
       .then((data) => setApiData(data.items[0]));
   };
 
+  const fetchOtherData = async () => {
+    //fetching channel data in4
+    const channelData_url = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=${apiData.snippet.channelId}&key=${API_KEY}`;
+    await fetch(channelData_url)
+      .then((res) => res.json())
+      .then((data) => setChannelData(data.item[0]));
+  };
+
   useEffect(() => {
     fetchVideoData();
   }, []);
+
+  useEffect(() => {
+    fetchOtherData();
+  }, [apiData]);
 
   return (
     <div className="play-video">
@@ -73,7 +87,15 @@ const Playvideo = ({ videoId }) => {
       </div>
       <hr />
       <div className="publisher">
-        <img src={jack} alt="" />
+        <img
+          // check nếu api data có sẵn thì hiện logo user còn k thì render empty string
+          src={
+            channelData
+              ? channelData.snippet.thumbnails.default.url
+              : "undefine"
+          }
+          alt=""
+        />
         <div>
           <p>{apiData ? apiData.snippet.channelTitle : "No name"}</p>
           <span>1.3M Subscribers</span>

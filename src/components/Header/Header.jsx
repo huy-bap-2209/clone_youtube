@@ -2,7 +2,7 @@ import React from "react";
 import "./Header.css";
 
 import menu_icon from "../../assets/menu.png";
-import logo from "../../assets/logo.png";
+import logo from "../../assets/logo_menu.png";
 import search from "../../assets/search.png";
 import upload_icon from "../../assets/upload.png";
 import more_icon from "../../assets/more.png";
@@ -20,9 +20,12 @@ const Navbar = ({ setSidebar }) => {
           src={menu_icon}
           alt=""
         />
-        <Link to="/">
-          <img className="logo" src={logo} alt="" />
-        </Link>
+        <div className="logo-home-page">
+          <Link to="/">
+            <img className="logo" src={logo} alt="" />
+            <h4> HuyBapTube</h4>
+          </Link>
+        </div>
       </div>
       <div className="nav-middle flex-div">
         <div className="search-box flex-div">

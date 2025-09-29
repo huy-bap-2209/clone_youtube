@@ -14,7 +14,25 @@ nav {
 }
 
 .nav-left .logo {
-  width: 130px;
+  width: 37px;
+  /* height: 37px; */
+  /* display: flex;
+  align-items: center; */
+}
+
+.logo-home-page a {
+  display: flex;
+  align-items: center;
+  /* gap: 8px; */
+}
+
+.logo-home-page h4 {
+  font-family: Arial, sans-serif;
+  font-style: italic; /* font chữ nghiêng */
+  font-weight: bold;
+  text-transform: uppercase; /* font chữ hoa */
+  font-size: 18px;
+  margin: 0; /* bỏ default marin của thẻ h4 */
 }
 
 .nav-middle .search-box {
